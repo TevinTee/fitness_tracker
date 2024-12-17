@@ -10,7 +10,6 @@ def run_game():
 
     if response == "yes": 
         profile()
-        play()
     else:
        play()
 
@@ -27,7 +26,11 @@ def profile():
             profiles = json.load(json_file)  # Load existing profiles
     else:
         profiles = []  # Initialize as an empty list if file doesn't exist
-    
+
+    if any(profile["username"] == username for profile in profiles):
+        print(f"\nError: The username '{username}' is already taken. Please try a different one.")
+        username = input("Username: ")
+
     # Add the new profile to the list
     profiles.append({"name": name, "username": username})
     
@@ -42,8 +45,20 @@ def profile():
 def play():
 
     print("Starting game...")
-    return play
+    return play()
 
+
+def clear_json_file(file_path):
+    # Overwrite the JSON file with an empty list
+    with open(file_path, "w") as json_file:
+        json.dump([], json_file, indent=4)
+    print(f"The file '{file_path}' has been cleared.")
+
+# File path to the JSON file
+file_path = "profiles.json"
+
+# Clear the JSON file
+clear_json_file(file_path)
 
 if __name__ == "__main__":
     run_game()

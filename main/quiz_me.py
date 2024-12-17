@@ -1,4 +1,8 @@
+import json;
+import os;
+
 def run_game():
+
     # main function for playing the game
     welcome = "Welcome to Quiz Me!"
     print(welcome)
@@ -6,22 +10,39 @@ def run_game():
 
     if response == "yes": 
         profile()
+        play()
     else:
        play()
 
+
 def profile():
+
     print("Create Profile:")
     name = input("Full Name: ")
     username = input("Username: ")
+    file_path = "profiles.json"
 
-    print("Welcome " + username)
+    if os.path.exists(file_path):
+        with open(file_path, "r") as json_file:
+            profiles = json.load(json_file)  # Load existing profiles
+    else:
+        profiles = []  # Initialize as an empty list if file doesn't exist
+    
+    # Add the new profile to the list
+    profiles.append({"name": name, "username": username})
+    
+    # Save the updated profiles back to the JSON file
+    with open(file_path, "w") as json_file:
+        json.dump(profiles, json_file, indent=4)
 
+    print(f"\nWelcome {username}. Your profile has been saved.")
+
+
+# write code for different game modes, check score, start game...
 def play():
+
     print("Starting game...")
     return play
-
-# code for the quiz_me.py goes here...
-
 
 
 if __name__ == "__main__":
